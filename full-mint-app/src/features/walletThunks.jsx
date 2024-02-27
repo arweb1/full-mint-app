@@ -14,22 +14,36 @@ export const connectWallet = createAsyncThunk(
                 console.log('Connected to MM: ', provider);
 
                 const accounts = await provider.listAccounts();
-                const userAddres = accounts[0];
-                const balance = await provider.getBalance(userAddres);
-                const formattedBalance = parseFloat(balance).toFixed(2)
-                console.log('User Address', userAddres);
+                const userAddress = accounts[0];
+                const balance = await provider.getBalance(userAddress);
+                const formattedBalance = ethers.utils.formatEther(balance._hex)
+                console.log('User Address', userAddress);
 
-                thunkAPI.dispatch(setAddress(userAddres))
+                thunkAPI.dispatch(setAddress(userAddress))
                 thunkAPI.dispatch(setConnected(true));
                 thunkAPI.dispatch(setBalance(formattedBalance))
 
-                return userAddres;
-            } catch (error){
+                return userAddress;
+            } catch (error) {
                 console.error('error connecting MM: ', error)
                 throw error;
             }
-        }else{
+        } else {
             throw new Error("ETH is not supported on this brower")
         }
     }
 );
+
+export const updateBalance = createAsyncThunk(
+    'wallet/updateBalance',
+    async (_, thunkAPI) => {
+        const provider = new ethers.providers.Web3Provider(window.ethereum);
+        const accounts = await provider.listAccounts();
+        const userAddress = accounts[0];
+        const balance = await provider.getBalance(userAddress);
+        const formattedBalance = parseFloat(balance).toFixed(2)
+        console.log('User Address', userAddress);
+
+        thunkAPI.dispatch(setBalance(formattedBalance));
+    }
+)
