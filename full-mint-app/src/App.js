@@ -12,7 +12,6 @@ function App() {
     <Provider store={store}>
       <div className="App">
         <Header />
-        <ConnectWallet/>
       </div>
     </Provider>
   );
