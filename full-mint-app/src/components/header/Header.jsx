@@ -1,4 +1,4 @@
-import ConnectWallet from '../../features/wallet-components/ConnectWallet';
+import ConnectWallet from '../connectWallet/ConnectWallet';
 import './Header.scss';
 
 function Header() {

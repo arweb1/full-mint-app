@@ -1,12 +1,15 @@
 import React, { useEffect, useState } from 'react';
+import { v4 as uuidv4 } from 'uuid';
 import { connect, useDispatch, useSelector } from 'react-redux';
-import { connectWallet, updateBalance } from '../walletThunks';
-import { setAddress, setBalance, setConnected } from '../walletSlice';
+import { connectWallet, updateBalance } from '../../features/wallet-components/walletThunks';
+import { setAddress, setBalance, setConnected } from '../../features/wallet-components/walletSlice';
 import { ethers } from 'ethers';
 
 import './ConnectWallet.scss';
 
 import copyImage from '../../storage/images/copy-svgrepo-com.svg';
+import { addNotification } from '../../features/notificationsSlice';
+
 
 function ConnectWallet() {
     const dispatch = useDispatch();
@@ -67,7 +70,7 @@ function ConnectWallet() {
             const walletOptionsElement = document.querySelector('.walletOptions');
             const walletInfo = document.querySelector('.walletInfo');
             const copyWallet = document.querySelector('.copyWallet')
-            console.log(event.target)
+
             if (walletOptionsElement && !walletOptionsElement.contains(event.target) && !walletInfo.contains(event.target) && !copyWallet.contains(event.target)) {
                 setIsWalletOptionsOpen(false);
             }
@@ -113,10 +116,20 @@ function ConnectWallet() {
         if (walletAddress) {
             navigator.clipboard.writeText(walletAddress)
                 .then(() => {
-                    console.log('Copied')
+                    console.log('Copied');
+                    dispatch(addNotification({
+                        id: uuidv4(),
+                        message: 'Copied!',
+                        type: 'success'
+                    }))
                 })
                 .catch(error => {
-                    console.log('Error: ', error)
+                    console.log('Error: ', error);
+                    dispatch(addNotification({
+                        id: uuidv4(),
+                        message: 'Failed to Copy',
+                        type: 'error'
+                    }))
                 })
         }
     }
@@ -154,4 +167,4 @@ function ConnectWallet() {
     )
 }
 
-export default ConnectWallet
+export default ConnectWallet;

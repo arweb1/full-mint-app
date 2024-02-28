@@ -2,7 +2,7 @@ import { Provider } from "react-redux";
 import store from "./store";
 
 import Header from "./components/header/Header";
-import ConnectWallet from "./features/wallet-components/ConnectWallet";
+import Notifications from "./components/notifications/Notifications";
 
 import './styles/styles.scss'
 
@@ -12,6 +12,7 @@ function App() {
     <Provider store={store}>
       <div className="App">
         <Header />
+        <Notifications/>
       </div>
     </Provider>
   );
